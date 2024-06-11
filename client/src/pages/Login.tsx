@@ -45,6 +45,14 @@ const Login: React.FC = () => {
 		navigate('/signup');
 	};
 
+	const LoginButton = () => {
+		const handleLogin = () => {
+			window.location.href = 'http://localhost:3000/auth/google';
+		};
+
+		return <button onClick={handleLogin}>Login with Google</button>;
+	};
+
 	return (
 		<div className="flex h-screen">
 			<div className="flex-1">
@@ -80,6 +88,7 @@ const Login: React.FC = () => {
 								Sign Up
 							</button>
 						</div>
+						<LoginButton />
 					</form>
 				</div>
 			</div>
