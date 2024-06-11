@@ -71,12 +71,12 @@ const Login: React.FC = () => {
 							placeholder="Password"
 							className="w-full p-2 border border-gray-300 rounded"
 						/>
-						<button type="submit" className="w-full py-2 bg-pink-500 text-white rounded hover:bg-blue-700">
+						<button type="submit" className="w-full py-2 bg-pink-300 text-white rounded hover:bg-pink-300">
 							Log In
 						</button>
 						<div className="text-center">
 							Don't have an account?
-							<button className="text-blue-500 hover:underline ml-2" onClick={handleSignUp}>
+							<button className="text-pink-300 hover:underline ml-2" onClick={handleSignUp}>
 								Sign Up
 							</button>
 						</div>
