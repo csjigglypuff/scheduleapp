@@ -54,11 +54,11 @@ module.exports = {
 				publicPath: '/',
 			},
 		],
-		proxy: [
-			{
-				context: ['/'],
-				target: 'http://localhost:3000',
-			},
-		],
+		// proxy: [
+		// 	{
+		// 		context: ['/'],
+		// 		target: 'http://localhost:3000',
+		// 	},
+		// ],
 	},
 };
