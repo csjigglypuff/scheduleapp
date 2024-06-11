@@ -18,7 +18,8 @@ module.exports = {
 			/* For Style Sheets */
 			{
 				test: /\.css$/,
-				use: ['style-loader', 'css-loader'],
+				use: ['style-loader', 'css-loader', 'postcss-loader'],
+				include: path.resolve(__dirname, 'src'),
 			},
 			/* Server our images */
 			{
