@@ -21,7 +21,7 @@ module.exports = {
 				use: ['style-loader', 'css-loader', 'postcss-loader'],
 				include: path.resolve(__dirname, 'src'),
 			},
-			/* Server our images */
+			/* Serves our images */
 			{
 				test: /\.(webp|png|svg|jpg|jpeg|gif)$/i,
 				type: 'asset/resource',

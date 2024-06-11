@@ -50,7 +50,11 @@ const Login: React.FC = () => {
 			window.location.href = 'http://localhost:3000/auth/google';
 		};
 
-		return <button onClick={handleLogin}>Login with Google</button>;
+		return (
+			<button type="submit" className="w-full py-2 bg-pink-300 text-white rounded hover:bg-pink-300" onClick={handleLogin}>
+				Login with Google
+			</button>
+		);
 	};
 
 	return (

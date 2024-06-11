@@ -12,9 +12,6 @@ passport.use(
 			callbackURL: 'http://localhost:3000/auth/google/callback',
 		},
 		function (accessToken, refreshToken, profile, done) {
-			// Use profile information (mainly profile id) to check if the user is registered in your db
-			// If yes, return the user data using done(null, user)
-			// If not, create one and then return the user using done(null, user)
 			return done(null, profile);
 		}
 	)

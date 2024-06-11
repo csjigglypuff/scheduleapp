@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "jest --verbose",
-		"start": "nodemon server/src/server.js",
+		"start": "nodemon ./server/src/server.js",
 		"dev": "webpack server --config client/webpack.config.js --mode development",
 		"build:client": "webpack --config client/webpack.config.js --mode=development",
 		"build": "tsc --project server/tsconfig.json"
