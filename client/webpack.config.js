@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const dotenv = require('dotenv');
 const path = require('path');
 
-odeul.exports = {
+module.exports = {
 	mode: 'development',
 	entry: './client/src/index.tsx',
 	module: {
