@@ -66,29 +66,30 @@ groupController.addGroup = (req, res, next) => {
 		})
 		.catch(err => next(err));
 };
-// groupController.addGroup = (req, res, next) => {
-//   const { groupName } = req.body;
-//   // const { groupName, users } = req.body;
-//   // console.log("in get users controller");
-//   const query = `
-//     INSERT INTO groups (group_Name)
-//     VALUES ($1)
-//     RETURNING *
-//   `;
-//   db.query(query, [groupName])
-//     .then(result => {
-//       // console.log("group entered successfully");
-//       return next();
-//      })
-//     .catch(err => next(err));
-// };
+
+groupController.addGroup = (req, res, next) => {
+	const { groupName, username } = req.body;
+	console.log('in get users controller');
+	const query = `
+    INSERT INTO groups (group_Name)
+    VALUES ($1)
+    RETURNING *
+  `;
+	db.query(query, [groupName])
+		.then(result => {
+			// console.log("group entered successfully");
+			return next();
+		})
+		.catch(err => next(err));
+};
 
 groupController.addUsersToGroup = (req, res, next) => {
-	const { username, groupName } = req.body;
-
+	const { groupName } = req.body;
+	const username = req.cookies.username;
+	console.log('username from cookies:', username, groupName);
 	// Step 1: Query for user_id using the username
 	const getUserIdQuery = 'SELECT id FROM users WHERE username = $1';
-	const getGroupIdQuery = 'SELECT id FROM groups WHERE name = $1';
+	const getGroupIdQuery = 'SELECT id FROM groups WHERE group_name = $1';
 
 	let user_id, group_id;
 
@@ -105,7 +106,7 @@ groupController.addUsersToGroup = (req, res, next) => {
 				throw new Error('Group not found');
 			}
 			group_id = result.rows[0].id;
-
+			console.log('we got ids:', user_id, group_id);
 			// Step 2: Insert into user_groups
 			const insertUserGroupQuery = `
         INSERT INTO user_groups (user_id, group_id)
@@ -126,14 +127,13 @@ groupController.addUsersToGroup = (req, res, next) => {
 };
 
 groupController.getGroups = (req, res, next) => {
-	const userId = req.user.id;
-
+	const userId = req.cookies.id;
 	if (!userId) {
 		return res.status(400).send('Missing user_id');
 	}
 
 	const getGroupsQuery = `
-    SELECT g.id, g.name
+    SELECT g.id, g.group_name
     FROM groups g
     JOIN user_groups ug ON g.id = ug.group_id
     WHERE ug.user_id = $1;

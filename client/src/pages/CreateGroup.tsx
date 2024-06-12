@@ -98,7 +98,7 @@ const CreateGroup: React.FC = () => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ groupName, users: selectedUsers }),
+				body: JSON.stringify({ groupName }),
 			});
 
 			if (response.ok) {

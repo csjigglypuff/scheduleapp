@@ -24,8 +24,9 @@ groupRouter.post('/getusers', groupController.getUsers, (req, res) => res.status
 groupRouter.post('/addgroup', groupController.addGroup, (req, res) => res.status(200).json({}));
 
 //Route to add group to group table and then users and group names to many to many table
-groupRouter.post('/adduserstogroup', /*groupController.addGroup,*/ groupController.addUsersToGroup, (req, res) => res.status(200).json({}));
+// need to take  out addGroup, because we'll create a the group everytime when adding users //
+groupRouter.post('/adduserstogroup', groupController.addUsersToGroup, (req, res) => res.status(200).json({}));
 
-groupRouter.get('/getgroups', authController.authenticateCookie, groupController.getGroups, (req, res) => res.status(200).json(res.locals.groups));
+groupRouter.get('/getgroups', groupController.getGroups, (req, res) => res.status(200).json(res.locals.groups));
 
 module.exports = groupRouter;

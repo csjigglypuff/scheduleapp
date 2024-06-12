@@ -71,9 +71,9 @@ userController.login = (req, res, next) => {
 			if (password !== user.password) {
 				return res.status(401).send('Invalid credentials');
 			}
-
-			res.cookie('user_id', user.id, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-			console.log('userid: ', user.id);
+			res.cookie('id', user.id, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+			res.cookie('username', user.username, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+			console.log('username: ', user.username);
 			res.locals.user = { id: user.id, username: user.username };
 			return next();
 		})

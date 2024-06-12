@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 interface Group {
 	id: number;
-	name: string;
+	group_name: string;
 }
 
 interface User {
@@ -19,7 +19,6 @@ const Sidebar: React.FC = () => {
 	useEffect(() => {
 		const fetchGroups = async () => {
 			try {
-				console.log('groups fetching');
 				const response = await fetch('/api/group/getgroups', {
 					method: 'GET',
 					credentials: 'include', // This ensures cookies are included in the request
@@ -29,7 +28,7 @@ const Sidebar: React.FC = () => {
 				});
 
 				const data = await response.json();
-				console.log('fetchGroups: ', data);
+				console.log('data: ', data);
 				setGroups(data);
 			} catch (error) {
 				setError('Failed to fetch groups');
@@ -39,12 +38,13 @@ const Sidebar: React.FC = () => {
 		fetchGroups();
 	}, []);
 
+	console.log('groups:', groups);
+
 	const handleGroupSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const groupId = Number(e.target.value);
 		const group = groups.find(g => g.id === groupId) || null;
-		console.log(groupId);
+
 		setSelectedGroup(group);
-		console.log('selectedGroup: ', selectedGroup);
 		setError('');
 	};
 
@@ -93,18 +93,18 @@ const Sidebar: React.FC = () => {
 				</option>
 				{groups.map(group => (
 					<option key={group.id} value={group.id}>
-						{group.name}
+						{group.group_name}
 					</option>
 				))}
 			</select>
-			{selectedGroup && (
+			{/* {selectedGroup && (
 				<div>
 					<h3> Add User </h3>
 					<input type="text" value={username} onChange={handleUsernameChange} placeholder="Username" />
 					<button onClick={handleAddUser}>Add</button>
 				</div>
 			)}
-			{error && <p className="error">{error}</p>}
+			{error && <p className="error">{error}</p>} */}
 		</div>
 	);
 };
