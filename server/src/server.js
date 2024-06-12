@@ -27,8 +27,10 @@ app.use(passport.session());
 //user route test
 const userRouter = require('./routes/userRouter');
 app.use('/user', userRouter);
-// const groupRouter = require('./routes/groupRouter');
-// app.use('/group', groupRouter);
+const groupRouter = require('./routes/groupRouter');
+app.use('/group', groupRouter);
+const scheduleRouter = require('./routes/scheduleRouter');
+app.use('/schedule', groupRouter);
 // Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
@@ -39,10 +41,10 @@ app.get('/', (req, res) => {
 	res.send('Hello, world!');
 });
 
-app.post('/api/schedule', (req, res) => {
-	// Handle POST request data
-	res.send(req.body);
-});
+// app.post('/api/schedule', (req, res) => {
+// 	// Handle POST request data
+// 	res.send(req.body);
+// });
 // Error handling
 app.use((err, req, res, next) => {
 	console.error(err.stack);

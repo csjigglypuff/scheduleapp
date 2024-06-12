@@ -17,7 +17,7 @@ groupRouter.post('/getusers',
 );
 
 groupRouter.post('/addgroup', 
-  groupController.checkUser, 
+  groupController.addGroup, 
   (req, res) => res.status(200).json(res.locals.userExists)
 );
 
