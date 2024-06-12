@@ -8,35 +8,27 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 
 const App: React.FC = () => {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route 
-                    path="/calendar" 
-                    element={
-                        <>
-                        <Navbar />
-                        <div className="mainpage">
-                        <Sidebar />
-                        <Calendar />
-                        </div>
-                        </>
-                    }
-                />
-                <Route
-                    path="/creategroup"
-                    element={
-                         <>
-                        <Navbar />
-                        <CreateGroup />
-                         </>
-                     }
-                />
-            </Routes>
-        </Router>
-    );
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Login />} />
+				<Route path="/signup" element={<Signup />} />
+				<Route
+					path="/calendar"
+					element={
+						<>
+							<div className="flex">
+								<Navbar />
+								<Sidebar />
+								<Calendar />
+							</div>
+						</>
+					}
+				/>
+				<Route path="/creategroup" element={<CreateGroup />} />
+			</Routes>
+		</Router>
+	);
 };
 
 export default App;
