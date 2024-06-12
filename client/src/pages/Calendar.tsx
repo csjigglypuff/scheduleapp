@@ -206,6 +206,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { jigglypuffhugsClockTower } from '../assets/jigglypuffhugsclocktower';
+import { useNavigate } from 'react-router-dom'
 
 const Calendar: React.FC = () => {
 	const daysOfWeek = ['Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -216,6 +217,8 @@ const Calendar: React.FC = () => {
 	// State to track dragging
 	const [isDragging, setIsDragging] = useState(false);
 	const [currentDay, setCurrentDay] = useState<string | null>(null);
+
+	const navigate = useNavigate();
 
 	// Function to toggle selection of a time slot
 	const toggleSlot = (day: string, slot: string) => {
@@ -305,6 +308,25 @@ const Calendar: React.FC = () => {
 		}
 	};
 
+	const handleLogging = async () => {
+        console.log('logout button clicked')
+        try {
+            const response = await fetch('/api/logout', { 
+                method: 'GET',
+                credentials: 'include',
+             });
+            console.log('response:', response)
+            if (response.ok) {
+                sessionStorage.clear();
+                navigate('/');
+            } else {
+                console.error('Failed to log out');
+            }
+        } catch (error) {
+            console.error('Error logging out', error)
+        }
+	}
+
 	return (
 		<div className="relative min-h-screen">
 			<div
@@ -325,7 +347,7 @@ const Calendar: React.FC = () => {
 						<button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700" onClick={handleSubmit}>
 							Set schedule
 						</button>
-						<button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
+						<button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700" onClick={handleLogging}>Logout</button>
 					</div>
 				</div>
 				<div className="mb-4">

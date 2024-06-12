@@ -12,4 +12,5 @@ userRouter.post('/checkuser', userController.checkUser, (req, res) => res.status
 
 userRouter.post('/login', userController.login, (req, res) => res.status(200).json(res.locals.userExists));
 
+
 module.exports = userRouter;

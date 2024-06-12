@@ -3,7 +3,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const cookieParser = require('cookie-parser');
 
 const passport = require('./controllers/passportController');
 const session = require('express-session');
@@ -17,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '../../../client/src')));
-app.use(cors());
+app.use(cors({origin: 'http://localhost:3000', credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -37,16 +36,23 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
   res.redirect('http://localhost:8080/calendar');
 });
 
-app.get('/calendar', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'client', 'src', 'index.html'));
+app.get('/api/logout', (req, res) => {
+  req.logout((err) => {
+    res.clearCookie('id');
+    res.clearCookie('username');
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Session destroy error:', err);
+        return res.status(500).json({ message: 'Failed to destroy session' });
+      }
+      console.log('Logged out successfully');
+      return res.status(200).json({ message: 'Logged out successfully' });
+    });
+  });
 });
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../../client/src/index.html'));
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'client', 'src', 'index.html'));
 });
 
 app.use((err, req, res, next) => {
