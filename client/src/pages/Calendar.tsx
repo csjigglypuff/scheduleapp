@@ -138,7 +138,7 @@
 
 // export default Calendar;
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Calendar: React.FC = () => {
 	const daysOfWeek = ['Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -146,8 +146,11 @@ const Calendar: React.FC = () => {
 
 	// State to track selected time slots
 	const [selectedSlots, setSelectedSlots] = useState<{ [key: string]: string[] }>({});
+	// State to track dragging
+	const [isDragging, setIsDragging] = useState(false);
+	const [currentDay, setCurrentDay] = useState<string | null>(null);
 
-	// Toggle selection of a time slot
+	// Function to toggle selection of a time slot
 	const toggleSlot = (day: string, slot: string) => {
 		setSelectedSlots(prev => {
 			const selectedForDay = prev[day] || [];
@@ -167,7 +170,41 @@ const Calendar: React.FC = () => {
 		});
 	};
 
-	// Prepare data for POST request
+	// Function to handle the start of a drag
+	const handleDragStart = (day: string, slot: string) => {
+		setIsDragging(true);
+		setCurrentDay(day);
+		toggleSlot(day, slot);
+	};
+
+	// Function to handle dragging over slots
+	const handleDragOver = (day: string, slot: string) => {
+		if (isDragging && currentDay === day) {
+			toggleSlot(day, slot);
+		}
+	};
+
+	// Function to handle the end of a drag
+	const handleDragEnd = () => {
+		setIsDragging(false);
+		setCurrentDay(null);
+	};
+
+	// Attach and remove event listeners for mouse and touch events
+	useEffect(() => {
+		const handleMouseUp = () => handleDragEnd();
+		const handleTouchEnd = () => handleDragEnd();
+
+		window.addEventListener('mouseup', handleMouseUp);
+		window.addEventListener('touchend', handleTouchEnd);
+
+		return () => {
+			window.removeEventListener('mouseup', handleMouseUp);
+			window.removeEventListener('touchend', handleTouchEnd);
+		};
+	}, []);
+
+	// Function to handle submission of selected slots
 	const handleSubmit = async () => {
 		const selectedData = Object.entries(selectedSlots).map(([day, times]) => ({
 			day,
@@ -224,10 +261,13 @@ const Calendar: React.FC = () => {
 						{timeSlots.map(slot => (
 							<div
 								key={slot}
-								className={`p-2 rounded-md mb-1 text-center cursor-pointer ${
-									(selectedSlots[day] || []).includes(slot) ? 'bg-blue-200' : 'bg-gray-200'
+								className={`p-2 rounded-md mb-1 text-center cursor-pointer transition-colors duration-300 ${
+									(selectedSlots[day] || []).includes(slot) ? 'bg-blue-200 hover:bg-blue-300' : 'bg-gray-200 hover:bg-blue-100'
 								}`}
-								onClick={() => toggleSlot(day, slot)}
+								onMouseDown={() => handleDragStart(day, slot)}
+								onMouseEnter={() => handleDragOver(day, slot)}
+								onTouchStart={() => handleDragStart(day, slot)}
+								onTouchMove={() => handleDragOver(day, slot)}
 							>
 								{slot}
 							</div>
