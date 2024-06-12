@@ -3,13 +3,14 @@ const db = require('../models/user');
 const userController = {};
 
 userController.createTable = (req, res, next) => {
-  console.log("in create table controller")
+  console.log("in create table controller");
   const query = `
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
       username VARCHAR,
       password VARCHAR
-    )`;
+    )
+    `;
   db.query(query)
     .then(result => {          
       console.log("Table created successfully");
@@ -19,7 +20,7 @@ userController.createTable = (req, res, next) => {
 };
 
 userController.addUser = (req, res, next) => {
-  console.log("in add user controller")
+  console.log("in add user controller");
   const { username } = req.body;
   password = "";
   const query = `
@@ -30,6 +31,22 @@ userController.addUser = (req, res, next) => {
   db.query(query, [username, password])
     .then(result => {
       console.log("User entered successfully");
+      return next();
+     })
+    .catch(err => next(err));
+};
+
+userController.checkUser = (req, res, next) => {
+  console.log("in check user controller");
+  res.locals.userExists=false;
+  const { username } = req.body;
+  const query = `
+     SELECT * FROM users WHERE username = $1
+  `;
+  db.query(query, [username])
+    .then(result => {
+      console.log("User found successfully");
+      if (result.rows.length > 0) res.locals.userExists = true;
       return next();
      })
     .catch(err => next(err));
