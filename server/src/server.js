@@ -15,7 +15,8 @@ require('dotenv').config();
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../../../client/src')));
 app.use(cors());
 app.use(express.json());
 
@@ -26,7 +27,7 @@ app.use(passport.session());
 
 //user route test
 const userRouter = require('./routes/userRouter');
-app.use('/user', userRouter);
+app.use('/api/user', userRouter);
 const groupRouter = require('./routes/groupRouter');
 app.use('/group', groupRouter);
 const scheduleRouter = require('./routes/scheduleRouter');
@@ -37,8 +38,9 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
 	res.redirect('http://localhost:8080/calendar');
 });
 
-app.get('/', (req, res) => {
-	res.send('Hello, world!');
+app.get('*', (req, res) => {
+	console.log('hello world');
+	res.sendFile(path.join(__dirname, '../../client/src/index.html'));
 });
 
 // app.post('/api/schedule', (req, res) => {
