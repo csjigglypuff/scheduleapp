@@ -13,12 +13,19 @@ const Navbar: React.FC = () => {
         { path: '/creategroup', label: 'Create Group' },
     ];
 
-    function handleLogging() {
-        sessionStorage.clear();
-        navigate('/');
-    }
-
-    const isLoggedIn = Boolean(sessionStorage.getItem('token'));  // depends on local or session storage? 
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('/user/logout', {
+                method: 'POST',
+            });
+            if (response.ok) {
+                sessionStorage.clear();
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
+    };
 
     return (
         <div className="navbar">
@@ -31,11 +38,9 @@ const Navbar: React.FC = () => {
                     ))}
                 </ul>
                 <div className="navbtns">
-                    {isLoggedIn && (
-                        <button className="logOut" onClick={handleLogging}>
-                            Log Out
-                        </button>
-                    )} 
+                    <button className="logOut" onClick={handleLogout}>
+                        Log Out
+                    </button>
                 </div>
             </nav>
         </div>
