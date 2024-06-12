@@ -18,15 +18,26 @@ const App: React.FC = () => {
 					path="/calendar"
 					element={
 						<>
-							<div className="flex">
+							<div className="flex flex-col">
 								<Navbar />
-								<Sidebar />
-								<Calendar />
+								<div className="flex">
+									<Sidebar />
+									<Calendar />
+								</div>
 							</div>
 						</>
 					}
 				/>
-				<Route path="/creategroup" element={<CreateGroup />} />
+
+				<Route
+					path="/creategroup"
+					element={
+						<div className="flex flex-col">
+							<Navbar />
+							<CreateGroup />
+						</div>
+					}
+				/>
 				<Route path="/schedule/combined" element={<CombinedSchedule />} />
 			</Routes>
 		</Router>
