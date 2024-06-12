@@ -36,16 +36,16 @@ const Login: React.FC = () => {
     });
   };
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault();
-    try {
-      const response = await fetch('/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+	const handleLogin = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+		e.preventDefault();
+		try {
+			const response = await fetch('/user/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formData),
+			});
 
       if (response.ok) {
         navigate('/calendar');

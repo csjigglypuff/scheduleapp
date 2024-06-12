@@ -18,7 +18,7 @@ const CreateGroup: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('/api/users');
+        const response = await fetch('/group/getusers');
         const data = await response.json();
         setAllUsers(data);
       } catch (error) {
@@ -66,7 +66,7 @@ const CreateGroup: React.FC = () => {
     }
 
     try {
-      const response = await fetch('/api/groups', {
+      const response = await fetch('/group/adduserstogroup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
