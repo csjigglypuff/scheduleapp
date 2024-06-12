@@ -7,8 +7,8 @@ userController.createTable = (req, res, next) => {
 	const query = `
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
-      username VARCHAR,
-      password VARCHAR
+      username VARCHAR UNIQUE NOT NULL,
+      password VARCHAR NOT NULL
     )
     `;
 	db.query(query)

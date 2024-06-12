@@ -46,7 +46,7 @@ const Signup: React.FC = () => {
 					password: formData.password,
 				}),
 			});
-
+            console.log('signup response:', response)
 			if (response.ok) {
 				navigate('/calendar');
 			} else {

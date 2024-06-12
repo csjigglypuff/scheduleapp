@@ -1,23 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import schedule from '../assets/schedule.webp';
 
 interface LoginProps {
-	username: string;
-	password: string;
+  username: string;
+  password: string;
 }
 
 const Login: React.FC = () => {
-	const [formData, setFormData] = useState<LoginProps>({ username: '', password: '' });
-	const [error, setError] = useState('');
-	const navigate = useNavigate();
+  const [formData, setFormData] = useState<LoginProps>({ username: '', password: '' });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value,
-		});
-	};
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      try {
+        const response = await fetch('/user/checkuser', { method: 'POST' });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.userExists) {
+            navigate('/calendar');
+          }
+        }
+      } catch (error) {
+        console.log('Not authenticated');
+      }
+    };
+    checkLoggedIn();
+  }, [navigate]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
@@ -30,74 +47,68 @@ const Login: React.FC = () => {
 				body: JSON.stringify(formData),
 			});
 
-			if (response.ok) {
-				navigate('/calendar');
-			} else {
-				const data = await response.json();
-				setError(data.error || 'Login failed');
-			}
-		} catch (error) {
-			setError('Error occured during login');
-		}
-	};
+      if (response.ok) {
+        navigate('/calendar');
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Login failed');
+      }
+    } catch (error) {
+      setError('Error occurred during login');
+    }
+  };
 
-	const handleSignUp = (): void => {
-		navigate('/signup');
-	};
+  const handleSignUp = (): void => {
+    navigate('/signup');
+  };
 
-	const LoginButton = () => {
-		const handleLogin = () => {
-			window.location.href = 'http://localhost:3000/auth/google';
-		};
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:3000/auth/google';
+  };
 
-		return (
-			<button type="submit" className="w-full py-2 bg-pink-300 text-white rounded hover:bg-pink-300" onClick={handleLogin}>
-				Login with Google
-			</button>
-		);
-	};
-
-	return (
-		<div className="flex h-screen">
-			<div className="flex-1">
-				<img src={schedule} alt="Left Image" className="object-cover w-full h-full" />
-			</div>
-			<div className="flex-1 flex items-center justify-center bg-gray-100">
-				<div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
-					<h1 className="text-3xl font-bold text-center">Sign In</h1>
-					{error && <p className="text-red-500 text-center">{error}</p>}
-					<form onSubmit={handleLogin} className="space-y-4">
-						<input
-							type="text"
-							name="username"
-							value={formData.username}
-							onChange={handleInputChange}
-							placeholder="Username"
-							className="w-full p-2 border border-gray-300 rounded"
-						/>
-						<input
-							type="password"
-							name="password"
-							value={formData.password}
-							onChange={handleInputChange}
-							placeholder="Password"
-							className="w-full p-2 border border-gray-300 rounded"
-						/>
-						<button type="submit" className="w-full py-2 bg-pink-300 text-white rounded hover:bg-pink-300">
-							Log In
-						</button>
-						<div className="text-center">
-							Don't have an account?
-							<button className="text-pink-300 hover:underline ml-2" onClick={handleSignUp}>
-								Sign Up
-							</button>
-						</div>
-						<LoginButton />
-					</form>
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className="flex h-screen">
+      <div className="flex-1">
+        <img src={schedule} alt="Left Image" className="object-cover w-full h-full" />
+      </div>
+      <div className="flex-1 flex items-center justify-center bg-gray-100">
+        <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
+          <h1 className="text-3xl font-bold text-center">Sign In</h1>
+          {error && <p className="text-red-500 text-center">{error}</p>}
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              placeholder="Username"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              placeholder="Password"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+            <button type="submit" className="w-full py-2 bg-pink-300 text-white rounded hover:bg-pink-300">
+              Log In
+            </button>
+            <div className="text-center">
+              Don't have an account?
+              <button className="text-pink-300 hover:underline ml-2" onClick={handleSignUp}>
+                Sign Up
+              </button>
+            </div>
+            <button type="button" className="w-full py-2 bg-red-500 text-white rounded hover:bg-red-700" onClick={handleGoogleLogin}>
+              Login with Google
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Login;
