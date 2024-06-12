@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
+import CombinedSchedule from './pages/CombinedSchedule';
 
 const App: React.FC = () => {
 	return (
@@ -27,6 +28,7 @@ const App: React.FC = () => {
 						</>
 					}
 				/>
+
 				<Route
 					path="/creategroup"
 					element={
@@ -36,6 +38,7 @@ const App: React.FC = () => {
 						</div>
 					}
 				/>
+				<Route path="/schedules" element={<CombinedSchedule />} />
 			</Routes>
 		</Router>
 	);
