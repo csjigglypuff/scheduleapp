@@ -176,7 +176,7 @@ const Calendar: React.FC = () => {
 		console.log('Selected slots for submission:', selectedData);
 
 		// Define your API endpoint
-		const apiEndpoint = '/schedule';
+		const apiEndpoint = 'http://localhost:3000/schedule'; // Ensure this matches your backend route
 
 		try {
 			// Make a POST request to the API endpoint

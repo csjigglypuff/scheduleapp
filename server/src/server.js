@@ -30,7 +30,7 @@ app.use('/user', userRouter);
 const groupRouter = require('./routes/groupRouter');
 app.use('/group', groupRouter);
 const scheduleRouter = require('./routes/scheduleRouter');
-app.use('/schedule', groupRouter);
+app.use('/schedule', scheduleRouter);
 // Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
