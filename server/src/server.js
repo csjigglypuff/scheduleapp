@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const cookieParser = require('cookie-parser');
 
 const passport = require('./controllers/passportController');
 const session = require('express-session');
@@ -11,6 +12,7 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 // Middleware
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
@@ -26,9 +28,9 @@ app.use(passport.session());
 const userRouter = require('./routes/userRouter');
 app.use('/api/user', userRouter);
 const groupRouter = require('./routes/groupRouter');
-app.use('/group', groupRouter);
+app.use('/api/group', groupRouter);
 const scheduleRouter = require('./routes/scheduleRouter');
-app.use('/schedule', scheduleRouter);
+app.use('/api/schedule', scheduleRouter);
 // Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
@@ -40,7 +42,6 @@ app.get('/calendar', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-	console.log('hello world');
 	res.sendFile(path.join(__dirname, '../../client/src/index.html'));
 });
 

@@ -10,20 +10,6 @@ userRouter.post('/signup', userController.addUser, (req, res) => res.status(200)
 
 userRouter.post('/checkuser', userController.checkUser, (req, res) => res.status(200).json(res.locals.userExists));
 
-userRouter.post('/login', userController.login, (req, res) => {
-  req.session.user = res.locals.user;
-  res.status(200).json({ message: 'Login successful' });
-});
-
-userRouter.post('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ message: 'Logout failed' });
-    }
-    res.clearCookie('connect.sid'); // Ensure the cookie is cleared
-    res.status(200).json({ message: 'Logout successful' });
-  });
-});
-
+userRouter.post('/login', userController.login, (req, res) => res.status(200).json(res.locals.userExists));
 
 module.exports = userRouter;
