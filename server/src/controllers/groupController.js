@@ -138,7 +138,7 @@ groupController.getGroups = (req, res, next) => {
     JOIN user_groups ug ON g.id = ug.group_id
     WHERE ug.user_id = $1;
   `;
-
+	console.log('userid:', userId);
 	db.query(getGroupsQuery, [userId])
 		.then(result => {
 			if (result.rows.length === 0) {
@@ -146,6 +146,7 @@ groupController.getGroups = (req, res, next) => {
 			}
 			console.log('getgroups backend worked');
 			res.locals.groups = result.rows;
+			console.log;
 			return next();
 		})
 		.catch(err => {
