@@ -126,10 +126,9 @@ groupController.addUsersToGroup = (req, res, next) => {
 };
 
 groupController.getGroups = (req, res, next) => {
-	// const { user_id } = req.params;
-	const getUserIdQuery = 'SELECT id FROM users WHERE username = jeff';
-	let user_id;
-	if (!user_id) {
+	const userId = req.user.id;
+
+	if (!userId) {
 		return res.status(400).send('Missing user_id');
 	}
 
@@ -139,18 +138,13 @@ groupController.getGroups = (req, res, next) => {
     JOIN user_groups ug ON g.id = ug.group_id
     WHERE ug.user_id = $1;
   `;
-	db.query(getUserIdQuery, [username]).then(result => {
-		if (result.rows.length === 0) {
-			throw new Error('User not found');
-		}
-		user_id = result.rows[0].id;
-	});
-	return db
-		.query(getGroupsQuery, [user_id])
+
+	db.query(getGroupsQuery, [userId])
 		.then(result => {
 			if (result.rows.length === 0) {
 				return res.status(404).send('No groups found for this user');
 			}
+			console.log('getgroups backend worked');
 			res.locals.groups = result.rows;
 			return next();
 		})

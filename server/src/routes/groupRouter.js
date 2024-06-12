@@ -1,7 +1,7 @@
 const express = require('express');
 
 const groupController = require('../controllers/groupController');
-
+const authController = require('../controllers/authController');
 const groupRouter = express.Router();
 
 // Route to create the group table
@@ -26,6 +26,6 @@ groupRouter.post('/addgroup', groupController.addGroup, (req, res) => res.status
 //Route to add group to group table and then users and group names to many to many table
 groupRouter.post('/adduserstogroup', /*groupController.addGroup,*/ groupController.addUsersToGroup, (req, res) => res.status(200).json({}));
 
-groupRouter.post('/getgroups', groupController.getGroups, (req, res) => res.status(200).json({}));
+groupRouter.get('/getgroups', authController.authenticateCookie, groupController.getGroups, (req, res) => res.status(200).json({}));
 
 module.exports = groupRouter;

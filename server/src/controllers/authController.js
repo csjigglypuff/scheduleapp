@@ -8,7 +8,7 @@ authController.authenticateCookie = (req, res, next) => {
 	if (!userId) {
 		return res.status(401).send('Access denied');
 	}
-
+	console.log('cookie: ', userId);
 	req.user = { id: userId };
 	next();
 };

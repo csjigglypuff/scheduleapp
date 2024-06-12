@@ -19,8 +19,17 @@ const Sidebar: React.FC = () => {
 	useEffect(() => {
 		const fetchGroups = async () => {
 			try {
-				const response = await fetch('/api/group/getusers');
+				console.log('groups fetching');
+				const response = await fetch('/api/group/getgroups', {
+					method: 'GET',
+					credentials: 'include', // This ensures cookies are included in the request
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+
 				const data = await response.json();
+				console.log('fetchGroups: ', data);
 				setGroups(data);
 			} catch (error) {
 				setError('Failed to fetch groups');
