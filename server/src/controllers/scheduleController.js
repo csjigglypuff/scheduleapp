@@ -1,3 +1,4 @@
+const { default: test } = require('node:test');
 const db = require('../models/user');
 
 const scheduleController = {};
@@ -116,25 +117,29 @@ scheduleController.getSchedule = async (req, res, next) => {
 			const getCommonEntries = async (day) => {
 					const dayQuery = `SELECT ${day}, COUNT(*) FROM schedules WHERE user_id = ANY($1::int[]) GROUP BY ${day} HAVING COUNT(*) = $2`;
 					const dayResult = await db.query(dayQuery, [userIds, userIds.length]);
+					const timeArr = [];
+					 dayResult.rows.forEach((obj) => {
+						if (obj[day]) timeArr.push(obj[day]);
+					});
 
-					return dayResult.rows.map(row => row[day]);
+					return timeArr;
 			};
 
 			// Retrieve common schedule entries for each day
 			const commonSchedule = {
-					Mon: await getCommonEntries('Mon'),
-					Tues: await getCommonEntries('Tues'),
-					Wed: await getCommonEntries('Wed'),
-					Thu: await getCommonEntries('Thu'),
-					Fri: await getCommonEntries('Fri'),
-					Sat: await getCommonEntries('Sat'),
-					Sun: await getCommonEntries('Sun'),
+					Mon: await getCommonEntries('mon'),
+					Tues: await getCommonEntries('tues'),
+					Wed: await getCommonEntries('wed'),
+					Thu: await getCommonEntries('thu'),
+					Fri: await getCommonEntries('fri'),
+					Sat: await getCommonEntries('sat'),
+					Sun: await getCommonEntries('sun'),
 			};
 
 			// Store the result in res.locals
-			res.locals.savedSchedule = commonSchedule;
+			res.locals.combinedSchedule = commonSchedule;
 			console.log('Common schedule entries retrieved successfully!');
-			console.log(res.locals.savedSchedule);
+			console.log(res.locals.combinedSchedule);
 			return next();
 	} catch (error) {
 			console.error('Error retrieving schedule:', error);
