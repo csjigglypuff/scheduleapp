@@ -42,7 +42,9 @@ const Sidebar: React.FC = () => {
 	const handleGroupSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const groupId = Number(e.target.value);
 		const group = groups.find(g => g.id === groupId) || null;
+		console.log(groupId);
 		setSelectedGroup(group);
+		console.log('selectedGroup: ', selectedGroup);
 		setError('');
 	};
 
@@ -55,6 +57,10 @@ const Sidebar: React.FC = () => {
 			setError('Please select a group');
 			return;
 		}
+
+		useEffect(() => {
+			console.log('Updated selectedGroup:', selectedGroup);
+		}, [selectedGroup]);
 
 		try {
 			const response = await fetch(`/api/groups/${selectedGroup.id}/users`, {
