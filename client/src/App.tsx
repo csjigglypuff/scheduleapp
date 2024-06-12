@@ -38,7 +38,7 @@ const App: React.FC = () => {
 						</div>
 					}
 				/>
-				<Route path="/schedule/combined" element={<CombinedSchedule />} />
+				<Route path="/schedules" element={<CombinedSchedule />} />
 			</Routes>
 		</Router>
 	);
