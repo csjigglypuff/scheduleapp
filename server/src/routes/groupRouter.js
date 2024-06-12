@@ -1,24 +1,24 @@
 const express = require('express');
 
-const userController = require('../controllers/userController');
+const groupController = require('../controllers/groupController');
 
-const userRouter = express.Router();
+const groupRouter = express.Router();
 
 // Route to create the users table
-userRouter.get('/createtable',
-    userController.createTable,
+groupRouter.get('/createtable',
+  groupController.createTable,
   (req, res) => res.status(200).json({ message: 'Table created successfully'})
 );
 
 // Route to sign up a new user
-userRouter.post('/signup',
-  userController.addUser,
+groupRouter.post('/getusers',
+  groupController.getUsers,
 (req, res) => res.status(200).json({ message: 'User created successfully'})
 );
 
-userRouter.post('/checkuser', 
-  userController.checkUser, 
+groupRouter.post('/addgroup', 
+  groupController.addGroup, 
   (req, res) => res.status(200).json(res.locals.userExists)
 );
 
-module.exports = userRouter;
+module.exports = groupRouter;
