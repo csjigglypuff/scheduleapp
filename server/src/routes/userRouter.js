@@ -21,4 +21,5 @@ userRouter.post('/checkuser',
   (req, res) => res.status(200).json(res.locals.userExists)
 );
 
+
 module.exports = userRouter;
