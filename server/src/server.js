@@ -29,9 +29,9 @@ app.use(passport.session());
 const userRouter = require('./routes/userRouter');
 app.use('/api/user', userRouter);
 const groupRouter = require('./routes/groupRouter');
-app.use('/group', groupRouter);
+app.use('/api/group', groupRouter);
 const scheduleRouter = require('./routes/scheduleRouter');
-app.use('/schedule', scheduleRouter);
+app.use('/api/schedule', scheduleRouter);
 // Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
