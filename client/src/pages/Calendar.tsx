@@ -53,27 +53,50 @@ const Calendar: React.FC = () => {
 					{/* Add group options here */}
 				</select>
 			</div>
-			<div className="grid grid-cols-7 gap-4">
-				{daysOfWeek.map(day => (
-					<div key={day} className="bg-gray-100 p-2 rounded-md shadow-sm">
-						<div className="font-semibold text-center mb-2">{day}</div>
-						{timeSlots.map(slot => (
-							<div
-								key={slot}
-								className={`p-2 rounded-md mb-1 text-center cursor-pointer ${
-									(selectedSlots[day] || []).includes(slot) ? 'bg-blue-200' : 'bg-gray-200'
-								}`}
-								onClick={() => toggleSlot(day, slot)}
-							>
-								{slot}
+			<div className="flex border-2 gap-4">
+				<div>
+					<div className="border-2 grid grid-cols-7 gap-2">
+						{daysOfWeek.map(day => (
+							<div key={day} className="bg-gray-100 p-2 rounded-md shadow-sm">
+								<div className="font-semibold text-center mb-2">{day}</div>
+								{timeSlots.map(slot => (
+									<div
+										key={slot}
+										className={`p-2 rounded-md mb-1 text-center cursor-pointer ${
+											(selectedSlots[day] || []).includes(slot) ? 'bg-blue-200' : 'bg-gray-200'
+										}`}
+										onClick={() => toggleSlot(day, slot)}
+									>
+										{slot}
+									</div>
+								))}
 							</div>
 						))}
 					</div>
-				))}
+
+					<button className="mt-4 p-2 bg-green-500 text-white rounded-md hover:bg-green-700" onClick={handleSubmit}>
+						Set schedule
+					</button>
+				</div>
+				<div className="border-2 grid grid-cols-7 gap-2">
+					{daysOfWeek.map(day => (
+						<div key={day} className="bg-gray-100 p-2 rounded-md shadow-sm">
+							<div className="font-semibold text-center mb-2">{day}</div>
+							{timeSlots.map(slot => (
+								<div
+									key={slot}
+									className={`p-2 rounded-md mb-1 text-center cursor-pointer ${
+										(selectedSlots[day] || []).includes(slot) ? 'bg-blue-200' : 'bg-gray-200'
+									}`}
+									onClick={() => toggleSlot(day, slot)}
+								>
+									{slot}
+								</div>
+							))}
+						</div>
+					))}
+				</div>
 			</div>
-			<button className="mt-4 p-2 bg-green-500 text-white rounded-md hover:bg-green-700" onClick={handleSubmit}>
-				Set schedule
-			</button>
 		</div>
 	);
 };

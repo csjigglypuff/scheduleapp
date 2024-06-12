@@ -5,6 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const cookieParser = require('cookie-parser');
 
 // For Gmail Authorization
 const passport = require('./controllers/passportController'); // importing our auth controller
@@ -13,6 +14,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 // Middleware
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
@@ -39,7 +41,6 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
 });
 
 app.get('*', (req, res) => {
-	console.log('hello world');
 	res.sendFile(path.join(__dirname, '../../client/src/index.html'));
 });
 
